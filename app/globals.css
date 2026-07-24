@@ -9,16 +9,16 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   ::selection {
-    @apply bg-indigo-600/20 dark:bg-indigo-400/30;
+    @apply bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-indigo-600 ring-offset-2 ring-offset-slate-50 dark:ring-indigo-400 dark:ring-offset-slate-950;
+    @apply outline-none ring-2 ring-slate-400 ring-offset-2 ring-offset-slate-50 dark:ring-slate-500 dark:ring-offset-slate-900;
   }
 }
 
@@ -29,13 +29,13 @@
   }
 
   :root {
-    --grid-image: linear-gradient(to right, rgb(226 232 240 / 0.6) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(226 232 240 / 0.6) 1px, transparent 1px);
+    --grid-image: linear-gradient(to right, rgb(226 232 240 / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(226 232 240 / 0.4) 1px, transparent 1px);
   }
 
   .dark {
-    --grid-image: linear-gradient(to right, rgb(30 41 59 / 0.5) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(30 41 59 / 0.5) 1px, transparent 1px);
+    --grid-image: linear-gradient(to right, rgb(30 41 59 / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(30 41 59 / 0.4) 1px, transparent 1px);
   }
 
   .text-balance {
@@ -44,6 +44,14 @@
 
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
   }
 }
 

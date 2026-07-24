@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SplashScreen } from "@/components/splash-screen";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -33,9 +34,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${display.variable} ${sans.variable} ${mono.variable} font-sans`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body className={`${display.variable} ${sans.variable} ${mono.variable} font-sans bg-slate-50 text-slate-900`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <AuthProvider>
+            <SplashScreen />
             <SiteHeader />
             {children}
             <SiteFooter />

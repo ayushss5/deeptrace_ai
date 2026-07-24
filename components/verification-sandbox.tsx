@@ -27,6 +27,9 @@ import { saveAuditReport } from "@/lib/firebase/db";
 import { uploadVerificationMedia } from "@/lib/firebase/storage";
 import { formatBytes } from "@/lib/media";
 import { UploadDropzone, type SelectedMedia } from "@/components/upload-dropzone";
+import { PremiumCard } from "@/components/premium-card";
+import { AnalysisLoader } from "@/components/analysis-loader";
+import Folder from "@/components/ui/Folder";
 import type { Citation, NewAuditReport, Verdict } from "@/lib/types/firebase";
 
 type TabId = "upload" | "audio" | "url";
@@ -316,18 +319,30 @@ export function VerificationSandbox() {
           {!result ? (
             <div className="flex h-full flex-col items-center justify-center gap-3 text-center p-6">
               {analyzing ? (
-                <>
-                  <Loader2 className="h-10 w-10 text-indigo-500 animate-spin mb-2" strokeWidth={1.5} />
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    DeepTrace AI is analyzing the content...
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500 max-w-xs">
-                    Fetching global news context, running forensic metadata scans, and cross-checking the Google Fact Check Database.
-                  </p>
-                </>
+                <AnalysisLoader />
               ) : (
                 <>
-                  <ScanSearch className="h-8 w-8 text-slate-300 dark:text-slate-700" strokeWidth={1.5} />
+                  <div className="mb-6 flex items-center justify-center">
+                    <Folder
+                      size={1.5}
+                      color="#3b82f6" /* Tailwind blue-500 */
+                      items={[
+                        <div key="1" className="w-full h-full flex flex-col p-2 gap-1 opacity-50">
+                          <div className="h-1 bg-slate-300 rounded w-full"></div>
+                          <div className="h-1 bg-slate-300 rounded w-3/4"></div>
+                          <div className="h-1 bg-slate-300 rounded w-5/6"></div>
+                        </div>,
+                        <div key="2" className="w-full h-full flex flex-col p-2 gap-1 opacity-50">
+                          <div className="h-1 bg-slate-300 rounded w-full"></div>
+                          <div className="h-1 bg-slate-300 rounded w-1/2"></div>
+                          <div className="h-1 bg-slate-300 rounded w-4/5"></div>
+                        </div>,
+                        <div key="3" className="w-full h-full flex items-center justify-center opacity-40">
+                          <ScanSearch className="w-4 h-4 text-slate-400" />
+                        </div>
+                      ]}
+                    />
+                  </div>
                   <div className="max-w-xs">
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                       No verification yet
@@ -345,26 +360,26 @@ export function VerificationSandbox() {
               <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-4 space-x-6 overflow-x-auto">
                 <button
                   onClick={() => setActiveResultTab('overview')}
-                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'overview' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'overview' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
                 >
                   <Cpu className="w-4 h-4" /> Overview
-                  {activeResultTab === 'overview' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-t-full" />}
+                  {activeResultTab === 'overview' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-t-full" />}
                 </button>
                 <button
                   onClick={() => setActiveResultTab('news')}
-                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'news' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'news' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
                 >
                   <Newspaper className="w-4 h-4" /> Related News
                   <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 py-0.5 px-2 rounded-full text-[10px]">{result.newsArticles?.length || 0}</span>
-                  {activeResultTab === 'news' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-t-full" />}
+                  {activeResultTab === 'news' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-t-full" />}
                 </button>
                 <button
                   onClick={() => setActiveResultTab('factcheck')}
-                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'factcheck' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                  className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 ${activeResultTab === 'factcheck' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
                 >
                   <CheckCircle2 className="w-4 h-4" /> Fact Checks
                   <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 py-0.5 px-2 rounded-full text-[10px]">{result.factCheckClaims?.length || 0}</span>
-                  {activeResultTab === 'factcheck' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-t-full" />}
+                  {activeResultTab === 'factcheck' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-t-full" />}
                 </button>
               </div>
 
@@ -394,9 +409,11 @@ export function VerificationSandbox() {
                     </div>
 
                     {result.summary && (
-                      <p className="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                        {result.summary}
-                      </p>
+                      <PremiumCard interactive={true} className="p-4 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                        <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                          {result.summary}
+                        </p>
+                      </PremiumCard>
                     )}
 
                     {/* Telemetry info */}
@@ -416,20 +433,20 @@ export function VerificationSandbox() {
                     ) : (
                       <div className="grid grid-cols-1 gap-3">
                         {result.newsArticles.map((article, idx) => (
-                          <div key={idx} className="p-4 bg-white border border-slate-200 rounded-lg hover:shadow-sm transition-shadow dark:bg-slate-950 dark:border-slate-800">
+                          <PremiumCard key={idx} interactive={true} className="p-4 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                             <div className="flex items-center justify-between mb-2">
-                              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 rounded-md">
+                              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-md">
                                 {article.source}
                               </span>
                               <span className="text-xs text-slate-400">
                                 {new Date(article.publishedAt).toLocaleDateString()}
                               </span>
                             </div>
-                            <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-start gap-2">
+                            <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-start gap-2">
                               {article.title} <ExternalLink className="w-3 h-3 shrink-0 mt-1 opacity-50" />
                             </a>
                             <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">{article.snippet}</p>
-                          </div>
+                          </PremiumCard>
                         ))}
                       </div>
                     )}
@@ -445,7 +462,7 @@ export function VerificationSandbox() {
                     ) : (
                       <div className="grid grid-cols-1 gap-4">
                         {result.factCheckClaims.map((fc, idx) => (
-                          <div key={idx} className="p-4 bg-white border border-slate-200 rounded-lg flex flex-col sm:flex-row gap-4 shadow-sm dark:bg-slate-950 dark:border-slate-800">
+                          <PremiumCard key={idx} interactive={true} className="p-4 flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                             <div className="flex-1">
                               <p className="text-[10px] text-slate-400 mb-1 uppercase tracking-wider font-semibold">Claimed by: {fc.claimant}</p>
                               <h4 className="text-sm font-medium text-slate-800 dark:text-slate-200 italic border-l-2 border-slate-300 pl-3 py-1">"{fc.claim}"</h4>
@@ -456,11 +473,11 @@ export function VerificationSandbox() {
                                 {fc.rating.toLowerCase().includes('false') ? <ShieldAlert className="w-3 h-3" /> : <ShieldCheck className="w-3 h-3" />}
                                 {fc.rating}
                               </span>
-                              <a href={fc.url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 mt-1 sm:mt-auto">
+                              <a href={fc.url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 mt-1 sm:mt-auto">
                                 View Review <ExternalLink className="w-3 h-3" />
                               </a>
                             </div>
-                          </div>
+                          </PremiumCard>
                         ))}
                       </div>
                     )}
@@ -472,7 +489,7 @@ export function VerificationSandbox() {
                   <details className="group">
                     <summary className="flex items-center justify-between p-3 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
                       <div className="flex items-center gap-2">
-                        <FileJson className="w-4 h-4 text-slate-400 group-open:text-indigo-500" />
+                        <FileJson className="w-4 h-4 text-slate-400 group-open:text-blue-500" />
                         View Raw API Payload
                       </div>
                       <span className="text-[10px] text-slate-400">Debugging</span>
